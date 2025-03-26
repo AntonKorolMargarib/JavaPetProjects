@@ -1,0 +1,49 @@
+plugins {
+    id 'java'
+    id 'application'
+}
+
+group = 'com.margarib.integrator'
+version = '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testImplementation platform('org.junit:junit-bom:5.10.0')
+    testImplementation 'org.junit.jupiter:junit-jupiter'
+    implementation("org.slf4j:slf4j-api:2.0.9")
+    runtimeOnly('ch.qos.logback:logback-classic:1.4.12')
+    testImplementation("org.mockito:mockito-core:5.8.0")
+    testImplementation("org.mockito:mockito-junit-jupiter:5.8.0")
+    testImplementation 'org.assertj:assertj-core:3.27.3'
+}
+
+application {
+    mainClass = 'com.margarib.integrator.IntegratorApp'
+}
+
+test {
+    useJUnitPlatform()
+}
+
+javadoc {
+    source = sourceSets.main.allJava
+
+    def buildDirectoryFile = layout.buildDirectory.get().asFile
+    if (buildDirectoryFile) {
+        def javadocDir = new File(buildDirectoryFile, "javadoc")
+        destinationDir = javadocDir
+    }
+    options.encoding = "UTF-8"
+}
+
+jar {
+    manifest.attributes['Main-Class'] = 'ru.jacquera.integrator.IntegratorApp'
+}
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
+}
